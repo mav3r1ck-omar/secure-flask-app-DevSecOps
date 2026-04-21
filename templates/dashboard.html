@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dash-header">
+        <h2>Dashboard</h2>
+        <a href="{{ url_for('contact') }}" class="btn">+ Add Contact</a>
+    </div>
+
+    {% if contacts %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in contacts %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.email }}</td>
+                    <td>{{ c.phone or '—' }}</td>
+                    <td>{{ c.website or '—' }}</td>
+                    <td>{{ c.message[:60] }}{% if c.message|length > 60 %}…{% endif %}</td>
+                    <td>
+                        {# ── CSRF token on delete form (Practice 3) ── #}
+                        <form method="POST" action="{{ url_for('delete_contact', contact_id=c.id) }}"
+                              onsubmit="return confirm('Delete this contact?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-msg">No contacts yet. <a href="{{ url_for('contact') }}">Add one.</a></p>
+    {% endif %}
+</div>
+{% endblock %}

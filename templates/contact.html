@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Contact Form{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <div class="form-card">
+        <h2>Contact Form</h2>
+        <p class="subtitle">All fields are validated and sanitized.</p>
+        <form method="POST" action="{{ url_for('contact') }}" novalidate>
+            {{ form.hidden_tag() }}  {# ── CSRF token (Practice 3) ── #}
+
+            <div class="form-group">
+                {{ form.name.label }}
+                {{ form.name(placeholder="Your full name") }}
+                {% if form.name.errors %}
+                    <ul class="errors">{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(placeholder="you@example.com") }}
+                {% if form.email.errors %}
+                    <ul class="errors">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.phone.label }}
+                {{ form.phone(placeholder="+1 234 567 8900") }}
+                {% if form.phone.errors %}
+                    <ul class="errors">{% for e in form.phone.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.website.label }}
+                {{ form.website(placeholder="https://yoursite.com") }}
+                {% if form.website.errors %}
+                    <ul class="errors">{% for e in form.website.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.message.label }}
+                {{ form.message(placeholder="Type your message here...") }}
+                {% if form.message.errors %}
+                    <ul class="errors">{% for e in form.message.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
